@@ -22,6 +22,27 @@ import "./App.css";
 const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
     const [isFilled, setIsFilled] = React.useState("Nothing dropped");
+    const [imageURL, setImageURL] = useState('https://avatars.githubusercontent.com/u/359935?v=4');
+
+    async function query(data) {
+        const response = await fetch(
+          "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
+          {
+            headers: { Authorization: "Bearer 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" },
+            method: "POST",
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.blob();
+        return result;
+      }
+    
+      const handlerFunction = () => {
+        query({"inputs": "Black and white professional-looking minimalist logo depicting a Astronaut riding a horse"}).then((response) => {
+          let tempURL = URL.createObjectURL(response);
+          setImageURL(tempURL);
+        });
+      }
 
 
     function handleClick() {
@@ -33,6 +54,7 @@ const App = ({ addOnUISdk }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
             <div className="container">
+            <img src={imageURL} className="App-logo" alt="logo" />
                 <Button size="m" onClick={handleClick}>
                     {buttonLabel}
                 </Button>
@@ -60,7 +82,7 @@ const App = ({ addOnUISdk }) => {
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
-                <BoopButton />
+                <BoopButton handlerr={handlerFunction}/>
             </div>
         </Theme>
     );

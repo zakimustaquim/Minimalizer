@@ -1,7 +1,5 @@
-import useSound from 'use-sound';
-import boopSfx from "../TestSound.mp3";
-const BoopButton = () => {
-  const [play] = useSound(boopSfx);
-  return <button onClick={play}>Boop!</button>;
+import React, { useState } from "react";
+const BoopButton = (props) => {
+  return <button onClick={props.handlerr}>Boop!</button>;
 };
-export default BoopButton; 
+export default BoopButton;
