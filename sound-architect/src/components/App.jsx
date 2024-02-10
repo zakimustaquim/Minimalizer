@@ -2,6 +2,13 @@
 // import these spectrum web components modules:
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import "@spectrum-web-components/theme/express/theme-light.js";
+import {FileTrigger} from 'react-aria-components';
+import {Text} from 'react-aria-components';
+import {DropZone} from '@react-spectrum/dropzone'
+import { IllustratedMessage } from "@adobe/react-spectrum";
+import {Heading} from '@adobe/react-spectrum'
+import {Content} from '@adobe/react-spectrum'
+import { ReactMediaRecorder } from "react-media-recorder";
 
 // To learn more about using "swc-react" visit:
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
@@ -12,6 +19,8 @@ import "./App.css";
 
 const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
+    const [isFilled, setIsFilled] = React.useState("Nothing dropped");
+
 
     function handleClick() {
         setButtonLabel("Clicked");
@@ -25,6 +34,43 @@ const App = ({ addOnUISdk }) => {
                 <Button size="m" onClick={handleClick}>
                     {buttonLabel}
                 </Button>
+                <DropZone
+                    maxWidth="size-3000"
+                    isFilled={isFilled}
+                    onDrop={(e)=> {
+                        const droppedFiles = event.dataTransfer.files;
+                        console.log('Dropped files:', droppedFiles[0].name); }
+                    }>
+                    <IllustratedMessage>
+                        <Heading>
+                            <Text slot="label">
+                            {isFilled}
+                            </Text>
+                        </Heading>
+                        <Content>
+                            <FileTrigger
+                                onSelect={(e)=> {
+                                    let file = (Array.from(e)).find((file) => file.type === 'image/jpeg');
+                                    if (file) setIsFilled(file.name) }
+                                }>
+                                <Button variant="primary">Browse</Button>
+                            </FileTrigger>
+                        </Content>
+                    </IllustratedMessage>
+                </DropZone>
+                <ReactMediaRecorder
+                    audio
+                    whenStopped={(blobUrl) => console.log(blobUrl)}
+                    render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
+                        <div>
+                        <p>{status}</p>
+                        <button onClick={startRecording}>Start Recording</button>
+                        <button onClick={stopRecording}>Stop Recording</button>
+                        <button onClick={console.log(mediaBlobUrl)}>Upload Recording</button>
+                        <audio src={mediaBlobUrl} controls autoPlay />
+                        </div>
+                    )}
+                />
             </div>
         </Theme>
     );
