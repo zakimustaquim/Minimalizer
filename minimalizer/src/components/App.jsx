@@ -17,13 +17,15 @@ import { Button } from "@swc-react/button";
 import { Theme } from "@swc-react/theme";
 import React, { useState } from "react";
 import "./App.css";
+import GeneratedImage from "./GeneratedImage";
 
 const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
-    const [isFilled, setIsFilled] = React.useState("Drag and drop a file here!");
+    const [isFilled, setIsFilled] = React.useState("Drag and drop reference material here!");
     const [imageURL1, setImageURL1] = useState('https://i.stack.imgur.com/mwFzF.png');
 
     function handleImageAdd(elementID) {
+        if (document.getElementById(elementID) == null) return;
         const url = document.getElementById(elementID).src;
         // const url = event.currentTarget.src;
         getImageBlob(url).then(blob => addOnUISdk.app.document.addImage(blob));
@@ -72,7 +74,7 @@ const App = ({ addOnUISdk }) => {
       }
     
       const handlerFunction = (input) => {
-        const inputStr = "Black and white professional-looking minimalist graphic depicting a " + input;
+        const inputStr = "Black and white professional-looking minimalist graphic depicting " + input;
         console.log(inputStr);
         query({"inputs": inputStr}).then((response) => {
           let tempURL = URL.createObjectURL(response);
@@ -121,7 +123,11 @@ const App = ({ addOnUISdk }) => {
                     </IllustratedMessage>
                 </DropZone>
                 <Button onClick={queryDescribe}>Minimalize</Button>
-                <img src={imageURL1} id="image1" className="App-logo" alt="logo" />
+                <div className="generations">
+                    <GeneratedImage source={imageURL1} identification={"image1"} addImageHandler={handleImageAdd} />
+                    <GeneratedImage source={imageURL1} identification={"image1"} addImageHandler={handleImageAdd} />
+                    <GeneratedImage source={imageURL1} identification={"image1"} addImageHandler={handleImageAdd} />
+                </div>
             </div>
         </Theme>
     );
