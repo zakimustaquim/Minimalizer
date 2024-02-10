@@ -8,9 +8,8 @@ import {DropZone} from '@react-spectrum/dropzone'
 import { IllustratedMessage } from "@adobe/react-spectrum";
 import {Heading} from '@adobe/react-spectrum'
 import {Content} from '@adobe/react-spectrum'
-import { ReactMediaRecorder } from "react-media-recorder";
-import SoundCard from "./SoundCard";
-import BoopButton from "./BoopButton"
+import addOnUISdk from "https://new.express.adobe.com/static/add-on-sdk/sdk.js";
+import Axios from 'axios';
 
 // To learn more about using "swc-react" visit:
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
@@ -21,8 +20,8 @@ import "./App.css";
 
 const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
-    const [isFilled, setIsFilled] = React.useState("Nothing dropped");
-    const [imageURL, setImageURL] = useState('https://avatars.githubusercontent.com/u/359935?v=4');
+    const [isFilled, setIsFilled] = React.useState("Drag and drop a file here!");
+    const [imageURL, setImageURL] = useState('https://i.stack.imgur.com/mwFzF.png');
 
     async function query(data) {
         const response = await fetch(
@@ -36,14 +35,44 @@ const App = ({ addOnUISdk }) => {
         const result = await response.blob();
         return result;
       }
+
+      async function addImageFromBlob(blob) {
+        try {
+          await document.addImage(blob);
+        } catch (error) {
+          console.log("Failed to add the image to the page.");
+        }
+      }      
+
+      async function queryDescribe() {
+        var astica_input = 'https://astica.ai/example/asticaVision_sample.jpg';
+        const requestData = {
+            tkn: "CAF496CC-AADB-401A-A28B-84173995DAAB8925BB17-3269-480E-9F87-B378B9CE1277",  
+            modelVersion: "2.1_full", 
+            input: astica_input,
+            visionParams: "describe", 
+            gpt_prompt: "",
+            prompt_length: 20 
+          };
+         Axios.post("https://vision.astica.ai/describe", requestData)
+         .then(response => {
+            console.log(response);
+            console.log(response.data.caption.text);
+            handlerFunction(response.data.caption.text);
+        })
+         .catch(error => {
+            console.log(error);
+        });
+      }
     
-      const handlerFunction = () => {
-        query({"inputs": "Black and white professional-looking minimalist logo depicting a Astronaut riding a horse"}).then((response) => {
+      const handlerFunction = (input) => {
+        const inputStr = "Black and white professional-looking minimalist graphic depicting a " + input;
+        console.log(inputStr);
+        query({"inputs": inputStr}).then((response) => {
           let tempURL = URL.createObjectURL(response);
           setImageURL(tempURL);
         });
       }
-
 
     function handleClick() {
         setButtonLabel("Clicked");
@@ -54,10 +83,7 @@ const App = ({ addOnUISdk }) => {
         // You may use "addOnUISdk.app.ui.theme" to get the current theme and react accordingly.
         <Theme theme="express" scale="medium" color="light">
             <div className="container">
-            <img src={imageURL} className="App-logo" alt="logo" />
-                <Button size="m" onClick={handleClick}>
-                    {buttonLabel}
-                </Button>
+                <Heading level={1}>Minimalizer</Heading>
                 <DropZone
                     maxWidth="size-3000"
                     isFilled={isFilled}
@@ -82,7 +108,8 @@ const App = ({ addOnUISdk }) => {
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
-                <BoopButton handlerr={handlerFunction}/>
+                <Button onClick={queryDescribe}>Minimalize</Button>
+                <img src={imageURL} className="App-logo" alt="logo" />
             </div>
         </Theme>
     );
