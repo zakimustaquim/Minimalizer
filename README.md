@@ -1,2 +1,2 @@
-# SoundArchitect
+# Minimalizer
  
