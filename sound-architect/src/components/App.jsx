@@ -9,6 +9,8 @@ import { IllustratedMessage } from "@adobe/react-spectrum";
 import {Heading} from '@adobe/react-spectrum'
 import {Content} from '@adobe/react-spectrum'
 import { ReactMediaRecorder } from "react-media-recorder";
+import SoundCard from "./SoundCard";
+import BoopButton from "./BoopButton"
 
 // To learn more about using "swc-react" visit:
 // https://opensource.adobe.com/spectrum-web-components/using-swc-react/
@@ -58,19 +60,7 @@ const App = ({ addOnUISdk }) => {
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
-                <ReactMediaRecorder
-                    audio
-                    whenStopped={(blobUrl) => console.log(blobUrl)}
-                    render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
-                        <div>
-                        <p>{status}</p>
-                        <button onClick={startRecording}>Start Recording</button>
-                        <button onClick={stopRecording}>Stop Recording</button>
-                        <button onClick={console.log(mediaBlobUrl)}>Upload Recording</button>
-                        <audio src={mediaBlobUrl} controls autoPlay />
-                        </div>
-                    )}
-                />
+                <BoopButton />
             </div>
         </Theme>
     );
