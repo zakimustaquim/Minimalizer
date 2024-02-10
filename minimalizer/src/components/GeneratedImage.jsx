@@ -19,7 +19,7 @@ const GeneratedImage = (props) => {
     console.log(props.source);
     return(
     <div className="generation">
-        <img src={props.source} id={props.identification} height="100px" className="App-logo" />
+        <img src={props.source} id={props.identification} height="150px" className="App-logo" />
         <Button onClick={imageAddingHandler}>Add to design</Button>
     </div>
     );

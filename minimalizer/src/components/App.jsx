@@ -23,6 +23,7 @@ const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
     const [isFilled, setIsFilled] = React.useState("Drag and drop reference material here!");
     const [imageURL1, setImageURL1] = useState('https://i.stack.imgur.com/mwFzF.png');
+    const [uploadedImageURL, setUploadedImageURL] = useState('default');
 
     function handleImageAdd(elementID) {
         if (document.getElementById(elementID) == null) return;
@@ -83,10 +84,6 @@ const App = ({ addOnUISdk }) => {
         });
       }
 
-    function handleClick() {
-        setButtonLabel("Clicked");
-    }
-
     async function getImageBlob(url) {
         return await fetch(url).then(response => response.blob());
     }
@@ -103,7 +100,9 @@ const App = ({ addOnUISdk }) => {
                     isFilled={isFilled}
                     onDrop={(e)=> {
                         const droppedFiles = event.dataTransfer.files;
-                        console.log('Dropped files:', droppedFiles[0].name); }
+                        console.log('Dropped files:', droppedFiles[0].name);
+                        setUploadedImageURL("https://astica.ai/example/asticaVision_sample.jpg");
+                        }
                     }>
                     <IllustratedMessage>
                         <Heading>
@@ -115,13 +114,14 @@ const App = ({ addOnUISdk }) => {
                             <FileTrigger
                                 onSelect={(e)=> {
                                     let file = (Array.from(e)).find((file) => file.type === 'image/jpeg');
-                                    if (file) setIsFilled(file.name) }
+                                    if (file) setUploadedImageURL("https://astica.ai/example/asticaVision_sample.jpg"); }
                                 }>
                                 <Button variant="primary">Browse</Button>
                             </FileTrigger>
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
+                <img src={uploadedImageURL === "default" ? "" : uploadedImageURL} />
                 <Button onClick={queryDescribe}>Minimalize</Button>
                 <div className="generations">
                     <GeneratedImage source={imageURL1} identification={"image1"} addImageHandler={handleImageAdd} />
