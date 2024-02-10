@@ -21,7 +21,13 @@ import "./App.css";
 const App = ({ addOnUISdk }) => {
     const [buttonLabel, setButtonLabel] = useState("Click me");
     const [isFilled, setIsFilled] = React.useState("Drag and drop a file here!");
-    const [imageURL, setImageURL] = useState('https://i.stack.imgur.com/mwFzF.png');
+    const [imageURL1, setImageURL1] = useState('https://i.stack.imgur.com/mwFzF.png');
+
+    function handleImageAdd(elementID) {
+        const url = document.getElementById(elementID).src;
+        // const url = event.currentTarget.src;
+        getImageBlob(url).then(blob => addOnUISdk.app.document.addImage(blob));
+    }
 
     async function query(data) {
         const response = await fetch(
@@ -42,7 +48,7 @@ const App = ({ addOnUISdk }) => {
         } catch (error) {
           console.log("Failed to add the image to the page.");
         }
-      }      
+      }
 
       async function queryDescribe() {
         var astica_input = 'https://astica.ai/example/asticaVision_sample.jpg';
@@ -70,13 +76,19 @@ const App = ({ addOnUISdk }) => {
         console.log(inputStr);
         query({"inputs": inputStr}).then((response) => {
           let tempURL = URL.createObjectURL(response);
-          setImageURL(tempURL);
+          setImageURL1(tempURL);
+          // handleImageAdd("image1")
         });
       }
 
     function handleClick() {
         setButtonLabel("Clicked");
     }
+
+    async function getImageBlob(url) {
+        return await fetch(url).then(response => response.blob());
+    }
+
 
     return (
         // Please note that the below "<Theme>" component does not react to theme changes in Express.
@@ -109,7 +121,7 @@ const App = ({ addOnUISdk }) => {
                     </IllustratedMessage>
                 </DropZone>
                 <Button onClick={queryDescribe}>Minimalize</Button>
-                <img src={imageURL} className="App-logo" alt="logo" />
+                <img src={imageURL1} id="image1" className="App-logo" alt="logo" />
             </div>
         </Theme>
     );
