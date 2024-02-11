@@ -50,11 +50,10 @@ const App = ({ addOnUISdk }) => {
       }
 
       async function queryDescribe(identifier) {
-        var astica_input = 'https://www.gohawaii.com/sites/default/files/hero-unit-images/11500_mauibeaches.jpg';
         const requestData = {
             tkn: "CAF496CC-AADB-401A-A28B-84173995DAAB8925BB17-3269-480E-9F87-B378B9CE1277",  
             modelVersion: "2.1_full", 
-            input: astica_input,
+            input: filledSrc,
             visionParams: "describe", 
             gpt_prompt: "",
             prompt_length: 20 
@@ -74,7 +73,7 @@ const App = ({ addOnUISdk }) => {
       const handlerFunction = (subject, identifier) => {
         let inputStr = "";
         if (identifier === '1') inputStr = "Black and white professional-looking minimalist graphic depicting " + subject;
-        if (identifier === '2') inputStr = "Professional-looking minimalist simplistic corporate logo depicting " + subject;
+        if (identifier === '2') inputStr = "Professional-looking minimalist simplistic clean graphic depicting " + subject;
         if (identifier === '3') inputStr = "Professional-looking minimalist simplistic graphic depicting " + subject;
         console.log(inputStr);
         query({"inputs": inputStr}).then((response) => {
@@ -130,7 +129,7 @@ const App = ({ addOnUISdk }) => {
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
-                <img src={filledSrc} height="200px" />
+                <img src={filledSrc} height={filledSrc === '' ? "0px" : "200px"} />
                 <Button onClick={minimalizerHandler} isDisabled={true}>Minimalize</Button>
                 <div className="generations">
                     <GeneratedImage source={imageURL1} identification={"image1"} addImageHandler={handleImageAdd} isDisabled={disabled} />
