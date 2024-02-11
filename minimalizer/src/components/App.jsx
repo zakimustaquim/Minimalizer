@@ -49,7 +49,7 @@ const App = ({ addOnUISdk }) => {
         return result;
       }
 
-      async function queryDescribe(identifier) {
+      async function queryDescribe() {
         const requestData = {
             tkn: "CAF496CC-AADB-401A-A28B-84173995DAAB8925BB17-3269-480E-9F87-B378B9CE1277",  
             modelVersion: "2.1_full", 
@@ -62,8 +62,9 @@ const App = ({ addOnUISdk }) => {
          .then(response => {
             console.log(response);
             console.log(response.data.caption.text);
-            console.log(identifier);
-            handlerFunction(response.data.caption.text, identifier);
+            handlerFunction(response.data.caption.text, '1');
+            handlerFunction(response.data.caption.text, '2');
+            handlerFunction(response.data.caption.text, '3');
         })
          .catch(error => {
             console.log(error);
@@ -91,9 +92,7 @@ const App = ({ addOnUISdk }) => {
 
     function minimalizerHandler() {
         setDisabled(true);
-        queryDescribe('1');
-        queryDescribe('2');
-        queryDescribe('3');
+        queryDescribe();
     }
 
 
@@ -122,10 +121,6 @@ const App = ({ addOnUISdk }) => {
                             </Text>
                         </Heading>
                         <Content>
-                        <FileTrigger
-                            acceptedFileTypes={['image']}>
-                            <Button variant="primary">Browse</Button>
-                        </FileTrigger>
                         </Content>
                     </IllustratedMessage>
                 </DropZone>
