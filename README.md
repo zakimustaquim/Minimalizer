@@ -1,4 +1,7 @@
 # Minimalizer
+
+## Demo
+[Demo Video](https://www.youtube.com/watch?v=ITYylgV1mlM)
  
 ## About
 
@@ -10,6 +13,8 @@ This project has been created with _@adobe/create-ccweb-add-on_ for the UGAHacks
 -   CSS
 -   React
 -   JavaScript
+-   Stable Diffusion XL
+-   Astica.ai
 
 ## Setup
 
